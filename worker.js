@@ -107,7 +107,7 @@ async function onMessage (message) {
     if(!message?.reply_to_message?.chat){
       return sendMessage({
         chat_id:ADMIN_UID,
-        text:'使用方法，回复转发的消息，并发送回复消息，或者`/block`、`/unblock`、`/checkblock`等指令'
+        text:'Usage: Reply to a forwarded message and send a reply message, or use commands like `/block`, `/unblock`, `/checkblock`'
       })
     }
     if(/^\/block$/.exec(message.text)){
@@ -154,13 +154,13 @@ async function handleGuestMessage(message){
 }
 
 async function handleNotify(message){
-  // 先判断是否是诈骗人员，如果是，则直接提醒
-  // 如果不是，则根据时间间隔提醒：用户id，交易注意点等
+  // First check if the user is a fraudster, if so, send a notification
+  // If not, send reminders based on time interval: user id, transaction tips, etc.
   let chatId = message.chat.id;
   if(await isFraud(chatId)){
     return sendMessage({
       chat_id: ADMIN_UID,
-      text:`检测到骗子，UID${chatId}`
+      text:`Fraudster detected, UID${chatId}`
     })
   }
   if(enable_notification){
@@ -181,14 +181,14 @@ async function handleBlock(message){
   if(guestChantId === ADMIN_UID){
     return sendMessage({
       chat_id: ADMIN_UID,
-      text:'不能屏蔽自己'
+      text:'Cannot block yourself'
     })
   }
   await nfd.put('isblocked-' + guestChantId, true)
 
   return sendMessage({
     chat_id: ADMIN_UID,
-    text: `UID:${guestChantId}屏蔽成功`,
+    text: `UID:${guestChantId} blocked successfully`,
   })
 }
 
@@ -200,7 +200,7 @@ async function handleUnBlock(message){
 
   return sendMessage({
     chat_id: ADMIN_UID,
-    text:`UID:${guestChantId}解除屏蔽成功`,
+    text:`UID:${guestChantId} unblocked successfully`,
   })
 }
 
@@ -211,7 +211,7 @@ async function checkBlock(message){
 
   return sendMessage({
     chat_id: ADMIN_UID,
-    text: `UID:${guestChantId}` + (blocked ? '被屏蔽' : '没有被屏蔽')
+    text: `UID:${guestChantId}` + (blocked ? ' is blocked' : ' is not blocked')
   })
 }
 
