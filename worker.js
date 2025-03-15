@@ -103,6 +103,12 @@ async function onMessage (message) {
       text:startMsg,
     })
   }
+  if(message.text === '/about'){
+    return sendMessage({
+      chat_id:message.chat.id,
+      text:'This is a message forwarding bot with anti-fraud capabilities. Messages sent to this bot will be forwarded to the bot owner, who can then reply to you. For more information, visit: https://github.com/Banezzz/nfd',
+    })
+  }
   if(message.chat.id.toString() === ADMIN_UID){
     if(!message?.reply_to_message?.chat){
       return sendMessage({
